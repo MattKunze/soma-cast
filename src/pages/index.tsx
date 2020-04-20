@@ -1,5 +1,10 @@
 import React from "react"
+import { Box } from "@chakra-ui/core"
 
-export default () => {
-  return <div>Howdy</div>
-}
+import { StationList } from "components"
+
+export default () => (
+  <Box p={10}>
+    <StationList />
+  </Box>
+)
