@@ -1,21 +1,32 @@
-import React from "react"
-import { Box } from "@chakra-ui/core"
+import React, { useCallback } from "react"
+import { Box, Button, ButtonGroup } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
 import { Card, SuspenseContainer } from "components"
 import { StationDetails } from "types"
-import { loadGetInitialProps } from "next/dist/next-server/lib/utils"
+import { castMedia } from "utils"
 
-const StationCard = ({ station }: { station: StationDetails }) => (
-  <Card
-    key={station.id}
-    title={station.title}
-    description={station.description}
-    imageUrl={station.thumbnail}
-  >
-    {station.playlist}
-  </Card>
-)
+const StationCard = ({ station }: { station: StationDetails }) => {
+  const playStream = useCallback(() => {
+    castMedia(station.streamUrl)
+  }, [station.streamUrl])
+
+  return (
+    <Card
+      key={station.id}
+      title={station.title}
+      description={station.description}
+      imageUrl={station.thumbnail}
+    >
+      <ButtonGroup spacing={2}>
+        <Button onClick={playStream}>Play</Button>
+        <Button>
+          <google-cast-launcher style={{ width: "38px", height: "38px" }} />
+        </Button>
+      </ButtonGroup>
+    </Card>
+  )
+}
 
 export default () => {
   const { station } = useRouter().query

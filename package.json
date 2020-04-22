@@ -23,6 +23,8 @@
   },
   "devDependencies": {
     "@types/chance": "^1.0.10",
+    "@types/chromecast-caf-receiver": "^5.0.4",
+    "@types/chromecast-caf-sender": "^1.0.3",
     "@types/node": "^13.13.0",
     "@types/react": "^16.9.34",
     "@types/xmldom": "^0.1.29",

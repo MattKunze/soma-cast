@@ -1,7 +1,17 @@
 import React from "react"
 import { CSSReset, ThemeProvider } from "@chakra-ui/core"
 import { AppProps } from "next/app"
+import Head from "next/head"
 import { SWRConfig } from "swr"
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      "cast-media-player": any
+      "google-cast-launcher": any
+    }
+  }
+}
 
 interface ErrorBoundaryState {
   hasError: boolean
@@ -36,6 +46,9 @@ function App({ Component, pageProps }: AppProps) {
           fetch(input, init).then((res) => res.json()),
       }}
     >
+      <Head>
+        <script src="./initializeCastApi.js"></script>
+      </Head>
       <ErrorBoundary>
         <ThemeProvider>
           <CSSReset />
