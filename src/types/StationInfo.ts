@@ -5,4 +5,5 @@ export interface StationInfo {
   thumbnail: string
   updated: number
   listeners: number
+  nowPlaying: string
 }

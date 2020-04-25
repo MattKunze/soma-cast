@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid } from "@chakra-ui/core"
+import { Box, Grid } from "@chakra-ui/core"
 import Link from "next/link"
 
 import { Card } from "components"
@@ -19,7 +19,10 @@ export default (props: Props) => (
             title={station.title}
             description={station.description}
             imageUrl={station.thumbnail}
-          />
+          >
+            <Box>Listeners: {station.listeners}</Box>
+            <Box>Now Playing: {station.nowPlaying}</Box>
+          </Card>
         </a>
       </Link>
     ))}

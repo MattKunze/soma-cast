@@ -1,9 +1,9 @@
 import React, { useCallback } from "react"
-import { Box, Button, ButtonGroup } from "@chakra-ui/core"
+import { Box, Button, ButtonGroup, Flex } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
 import { Card, SuspenseContainer } from "components"
-import { StationDetails } from "types"
+import { PlaylistEntry, StationDetails } from "types"
 import { castMedia } from "utils"
 
 const StationCard = ({ station }: { station: StationDetails }) => {
@@ -31,13 +31,19 @@ const StationCard = ({ station }: { station: StationDetails }) => {
 export default () => {
   const { station } = useRouter().query
   return (
-    <Box p={10}>
+    <Flex p={10} direction="row">
       <SuspenseContainer<StationDetails>
         fallback={<div>Loading...</div>}
         endpoint={`api/stations/${station}`}
       >
         {(data) => <StationCard station={data} />}
       </SuspenseContainer>
-    </Box>
+      <SuspenseContainer<PlaylistEntry[]>
+        fallback={<div>Loading...</div>}
+        endpoint={`api/playlist/${station}`}
+      >
+        {(data) => <pre>{JSON.stringify(data, null, "  ")}</pre>}
+      </SuspenseContainer>
+    </Flex>
   )
 }
