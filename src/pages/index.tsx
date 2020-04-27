@@ -1,10 +1,13 @@
 import React from "react"
-import { Box } from "@chakra-ui/core"
+import { Box, Flex } from "@chakra-ui/core"
 
-import { StationList } from "components"
+import { Controls, StationList } from "components"
 
 export default () => (
-  <Box p={10}>
+  <Flex p={10} direction="column">
+    <Box pb={3}>
+      <Controls />
+    </Box>
     <StationList />
-  </Box>
+  </Flex>
 )

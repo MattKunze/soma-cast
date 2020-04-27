@@ -6,4 +6,5 @@ export interface StationInfo {
   updated: number
   listeners: number
   nowPlaying: string
+  playlist: string
 }

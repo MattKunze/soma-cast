@@ -1,8 +1,7 @@
 import axios from "axios"
 import { DOMParser } from "xmldom"
 
-import { PlaylistEntry, StationInfo, StationDetails } from "types"
-import { pickOne } from "utils"
+import { PlaylistEntry, StationInfo } from "types"
 
 const getText = (node: Element, tag: string) =>
   node.getElementsByTagName(tag)[0].textContent
@@ -15,12 +14,8 @@ const parseStationInfo = (node: Element): StationInfo => ({
   updated: parseInt(getText(node, "updated"), 10),
   listeners: parseInt(getText(node, "listeners"), 10),
   nowPlaying: getText(node, "lastPlaying"),
+  playlist: getText(node, "fastpls"),
 })
-
-const parsePlaylist = (lines: string[]) =>
-  lines
-    .filter((t) => t.startsWith("File"))
-    .map((t) => t.substring(t.indexOf("=") + 1))
 
 const parsePlaylistEntry = (node: Element): PlaylistEntry => ({
   title: getText(node, "title"),
@@ -51,23 +46,13 @@ export const fetchStations = async (): Promise<StationInfo[]> => {
   return channels.map(parseStationInfo).sort(compareStations)
 }
 
-export const fetchDetails = async (id: string): Promise<StationDetails> => {
+export const fetchStation = async (id: string): Promise<StationInfo> => {
   const channels = await fetchXml("channels.xml", "channels")
   const station = channels.find((node) => node.getAttribute("id") === id)
   if (!station) {
     return null
   }
-  const info = parseStationInfo(station)
-
-  const playlist = getText(station, "fastpls")
-  const { data } = await axios.get<string>(playlist)
-  const urls = parsePlaylist(data.split(/\r?\n/))
-
-  return {
-    ...info,
-    playlist,
-    streamUrl: pickOne(urls),
-  }
+  return parseStationInfo(station)
 }
 
 export const fetchPlaylist = async (

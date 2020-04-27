@@ -1,15 +1,13 @@
-import React, { useCallback } from "react"
-import { Box, Button, ButtonGroup, Flex } from "@chakra-ui/core"
+import React from "react"
+import { Button, ButtonGroup, Flex } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
 import { Card, SuspenseContainer } from "components"
-import { PlaylistEntry, StationDetails } from "types"
-import { castMedia } from "utils"
+import { usePlaylistCaster } from "hooks"
+import { PlaylistEntry, StationInfo } from "types"
 
-const StationCard = ({ station }: { station: StationDetails }) => {
-  const playStream = useCallback(() => {
-    castMedia(station.streamUrl)
-  }, [station.streamUrl])
+const StationCard = ({ station }: { station: StationInfo }) => {
+  const castPlaylist = usePlaylistCaster()
 
   return (
     <Card
@@ -19,7 +17,7 @@ const StationCard = ({ station }: { station: StationDetails }) => {
       imageUrl={station.thumbnail}
     >
       <ButtonGroup spacing={2}>
-        <Button onClick={playStream}>Play</Button>
+        <Button onClick={() => castPlaylist(station.playlist)}>Play</Button>
         <Button>
           <google-cast-launcher style={{ width: "38px", height: "38px" }} />
         </Button>
@@ -32,7 +30,7 @@ export default () => {
   const { station } = useRouter().query
   return (
     <Flex p={10} direction="row">
-      <SuspenseContainer<StationDetails>
+      <SuspenseContainer<StationInfo>
         fallback={<div>Loading...</div>}
         endpoint={`api/stations/${station}`}
       >
