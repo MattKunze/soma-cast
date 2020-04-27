@@ -75,12 +75,6 @@ export default (): SessionInterface => {
         "caststatechanged" as CastContextEventType.CAST_STATE_CHANGED,
         handleChange
       )
-      instance.addEventListener(
-        "sessionstatechanged" as CastContextEventType.SESSION_STATE_CHANGED,
-        (ev) => {
-          console.warn("SESSION_STATE_CHANGED", ev)
-        }
-      )
 
       return () => {
         instance.removeEventListener(
