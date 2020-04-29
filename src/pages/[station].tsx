@@ -26,7 +26,7 @@ const StationCard = ({ station }: { station: StationInfo }) => {
   )
 }
 
-export default () => {
+export default function StationPage() {
   const { station } = useRouter().query
   return (
     <Flex p={10} direction="row">

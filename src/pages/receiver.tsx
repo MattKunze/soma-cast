@@ -2,7 +2,7 @@ import React from "react"
 import { Flex } from "@chakra-ui/core"
 import Head from "next/head"
 
-export default () => {
+export default function ReceiverPage() {
   return (
     <Flex
       direction="column"

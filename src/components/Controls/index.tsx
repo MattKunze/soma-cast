@@ -12,9 +12,8 @@ import {
 
 import { useCastSession } from "hooks"
 
-export default () => {
+export default function Controls() {
   const session = useCastSession()
-  console.warn({ session })
   return (
     <Flex direction="row" align="center" justify="space-between">
       <Box>{session.castState}</Box>

@@ -10,7 +10,7 @@ interface Props {
   stations: StationInfo[]
 }
 
-export default (props: Props) => {
+export default function StationList(props: Props) {
   const castPlaylist = usePlaylistCaster()
 
   return (

@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@chakra-ui/core": "^0.7.0",
@@ -22,12 +24,20 @@
     "xmldom": "^0.3.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-knobs": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/addons": "^5.3.18",
+    "@storybook/preset-typescript": "^3.0.0",
+    "@storybook/react": "^5.3.18",
     "@types/chance": "^1.0.10",
     "@types/chromecast-caf-receiver": "^5.0.4",
     "@types/chromecast-caf-sender": "^1.0.3",
     "@types/node": "^13.13.0",
     "@types/react": "^16.9.34",
     "@types/xmldom": "^0.1.29",
+    "babel-loader": "^8.1.0",
     "typescript": "^3.8.3"
   },
   "prettier": {

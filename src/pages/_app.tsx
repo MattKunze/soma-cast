@@ -38,7 +38,7 @@ class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
   }
 }
 
-function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig
       value={{
@@ -58,5 +58,3 @@ function App({ Component, pageProps }: AppProps) {
     </SWRConfig>
   )
 }
-
-export default App
