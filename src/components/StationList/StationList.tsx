@@ -10,12 +10,12 @@ interface Props {
   stations: StationInfo[]
 }
 
-export default function StationList(props: Props) {
+export default function StationList({ stations }: Props) {
   const castPlaylist = usePlaylistCaster()
 
   return (
     <Grid gap={4} templateColumns={"repeat(auto-fill, minmax(250px, 1fr))"}>
-      {props.stations.map((station) => (
+      {stations.map((station) => (
         <Link key={station.id} href={"[station]"} as={station.id}>
           <a>
             <Card

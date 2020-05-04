@@ -1,10 +1,14 @@
-import React from "react"
-import { Button, ButtonGroup, Flex } from "@chakra-ui/core"
+import React, { Suspense } from "react"
+import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
+import useSWR from "swr"
+import { Button, ButtonGroup, Flex } from "@chakra-ui/core"
 
-import { Card, SuspenseContainer } from "components"
+import { Card } from "components"
 import { usePlaylistCaster } from "hooks"
+import { fetchStation } from "services/somafm"
 import { PlaylistEntry, StationInfo } from "types"
+import { isServer, paramToString } from "utils"
 
 const StationCard = ({ station }: { station: StationInfo }) => {
   const castPlaylist = usePlaylistCaster()
@@ -26,22 +30,41 @@ const StationCard = ({ station }: { station: StationInfo }) => {
   )
 }
 
-export default function StationPage() {
+const PlaylistContainer = ({ station }: { station: StationInfo }) => {
+  const { data } = useSWR<PlaylistEntry[]>(`/api/playlist/${station.id}`, {
+    suspense: true,
+    refreshInterval: 5000,
+  })
+  return <pre>{JSON.stringify(data, null, "  ")}</pre>
+}
+
+interface Props {
+  initialData: StationInfo
+}
+export default function StationPage({ initialData }: Props) {
   const { station } = useRouter().query
-  return (
-    <Flex p={10} direction="row">
-      <SuspenseContainer<StationInfo>
-        fallback={<div>Loading...</div>}
-        endpoint={`api/stations/${station}`}
-      >
-        {(data) => <StationCard station={data} />}
-      </SuspenseContainer>
-      <SuspenseContainer<PlaylistEntry[]>
-        fallback={<div>Loading...</div>}
-        endpoint={`api/playlist/${station}`}
-      >
-        {(data) => <pre>{JSON.stringify(data, null, "  ")}</pre>}
-      </SuspenseContainer>
-    </Flex>
-  )
+  const { data } = useSWR(`/api/stations/${station}`, null, { initialData })
+  if (initialData) {
+    return (
+      <Flex p={10} direction="row">
+        <StationCard station={data} />
+        {!isServer() && (
+          <Suspense fallback={<div>Loading playlist...</div>}>
+            <PlaylistContainer station={data} />
+          </Suspense>
+        )}
+      </Flex>
+    )
+  } else {
+    return null
+  }
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { station } = context.query
+  return {
+    props: {
+      initialData: await fetchStation(paramToString(station)),
+    },
+  }
 }
