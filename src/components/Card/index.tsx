@@ -10,7 +10,7 @@ interface Props {
 export default function Card(props: React.PropsWithChildren<Props>) {
   return (
     <Box
-      maxW="sm"
+      maxW="lg"
       borderWidth="1px"
       rounded="lg"
       overflow="hidden"

@@ -1,63 +1,53 @@
-import React, { Suspense } from "react"
+import React from "react"
+import { Flex } from "@chakra-ui/core"
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
 import useSWR from "swr"
-import { Button, ButtonGroup, Flex } from "@chakra-ui/core"
 
-import { Card } from "components"
-import { usePlaylistCaster } from "hooks"
+import { StationDetails } from "components"
 import { fetchStation } from "services/somafm"
 import { PlaylistEntry, StationInfo } from "types"
-import { isServer, paramToString } from "utils"
-
-const StationCard = ({ station }: { station: StationInfo }) => {
-  const castPlaylist = usePlaylistCaster()
-
-  return (
-    <Card
-      key={station.id}
-      title={station.title}
-      description={station.description}
-      imageUrl={station.thumbnail}
-    >
-      <ButtonGroup spacing={2}>
-        <Button onClick={() => castPlaylist(station.playlist)}>Play</Button>
-        <Button>
-          <google-cast-launcher style={{ width: "38px", height: "38px" }} />
-        </Button>
-      </ButtonGroup>
-    </Card>
-  )
-}
-
-const PlaylistContainer = ({ station }: { station: StationInfo }) => {
-  const { data } = useSWR<PlaylistEntry[]>(`/api/playlist/${station.id}`, {
-    suspense: true,
-    refreshInterval: 5000,
-  })
-  return <pre>{JSON.stringify(data, null, "  ")}</pre>
-}
+import { paramToString } from "utils"
 
 interface Props {
   initialData: StationInfo
 }
 export default function StationPage({ initialData }: Props) {
   const { station } = useRouter().query
-  const { data } = useSWR(`/api/stations/${station}`, null, { initialData })
-  if (initialData) {
-    return (
-      <Flex p={10} direction="row">
-        <StationCard station={data} />
-        {!isServer() && (
-          <Suspense fallback={<div>Loading playlist...</div>}>
-            <PlaylistContainer station={data} />
-          </Suspense>
-        )}
-      </Flex>
-    )
-  } else {
+  const { data: stationInfo } = useSWR(`/api/stations/${station}`, null, {
+    initialData,
+  })
+  const { data: playlist } = useSWR(`/api/playlist/${station}`, {
+    refreshInterval: 10000,
+    onSuccess: (data: PlaylistEntry[], key, config) => {
+      data.forEach((entry) => {
+        entry.timestamp = new Date(entry.timestamp)
+      })
+    },
+  })
+  if (!stationInfo) {
+    console.error(`Invalid station: ${station}`)
     return null
   }
+
+  return (
+    <Flex
+      direction="column"
+      position="absolute"
+      top={0}
+      right={0}
+      bottom={0}
+      left={0}
+    >
+      <StationDetails
+        id={stationInfo.id}
+        title={stationInfo.title}
+        description={stationInfo.description}
+        thumbnail={stationInfo.thumbnail}
+        playlist={playlist}
+      />
+    </Flex>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

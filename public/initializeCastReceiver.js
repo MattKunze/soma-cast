@@ -7,6 +7,9 @@ document.head.appendChild(script)
 // doesn't work if we immediately initialize. sigh...
 setTimeout(() => {
   const options = new cast.framework.CastReceiverOptions()
-  options.maxInactivity = 36000
+  options.disableIdleTimeout = true
+  options.customNamespaces = {
+    "urn:x-cast:soma-cast": cast.framework.system.MessageType.JSON,
+  }
   cast.framework.CastReceiverContext.getInstance().start(options)
 }, 1000)
