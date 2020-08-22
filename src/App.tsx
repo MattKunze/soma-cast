@@ -1,24 +1,26 @@
 import { StatusBar } from "expo-status-bar"
 import React from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator } from "@react-navigation/stack"
 
-import Label from "components/Label"
+import Home from "pages/Home"
+import Station from "pages/Station"
+
+export type RootStackParamList = {
+  Home: undefined
+  Station: undefined
+}
+
+const Stack = createStackNavigator<RootStackParamList>()
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Label>shared component text</Label>
-      <Text>Plain ol text</Text>
+    <NavigationContainer>
       <StatusBar style="auto" />
-    </View>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Station" component={Station} />
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-})
