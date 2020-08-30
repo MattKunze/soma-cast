@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "soma-cast-rn",
-    "slug": "soma-cast-rn",
+    "name": "soma-cast",
+    "slug": "soma-cast",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
