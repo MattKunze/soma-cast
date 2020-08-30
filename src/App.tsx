@@ -19,6 +19,7 @@ export default function App() {
       linking={{
         prefixes: [],
         config: {
+          initialRouteName: "Home",
           screens: {
             Home: "",
             Station: "station/:stationId",

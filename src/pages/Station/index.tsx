@@ -1,11 +1,13 @@
-import React from "react"
-import { Button, StyleSheet, View } from "react-native"
+import React, { useEffect } from "react"
+import { StyleSheet, View } from "react-native"
 import { RouteProp } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 
 import { RootStackParamList } from "App"
 import LoadingIndicator from "components/atoms/LoadingIndicator"
+import Playlist from "components/molecules/Playlist"
 import StationCard from "components/molecules/StationCard"
+import usePlaylist from "hooks/usePlaylist"
 import useStationInfo from "hooks/useStationInfo"
 
 const styles = StyleSheet.create({
@@ -23,15 +25,25 @@ interface Props {
 
 export default function Station(props: Props) {
   const { stationId } = props.route.params
-  const { status, data } = useStationInfo(stationId)
+  const { status: infoStatus, data: stationInfo } = useStationInfo(stationId)
+  const { status: playlistStatus, data: playlist } = usePlaylist(stationId)
+
+  useEffect(() => {
+    if (stationInfo?.title) {
+      props.navigation.setOptions({ title: stationInfo.title })
+    }
+  }, [stationInfo?.title, props.navigation])
 
   return (
     <View style={styles.container}>
-      {status === "loading" ? (
+      {infoStatus === "loading" || playlistStatus === "loading" ? (
         <LoadingIndicator />
-      ) : data ? (
-        <StationCard {...data} />
-      ) : null}
+      ) : (
+        <>
+          {stationInfo && <StationCard {...stationInfo} />}
+          {playlist && <Playlist playlist={playlist} />}
+        </>
+      )}
     </View>
   )
 }
