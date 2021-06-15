@@ -1,52 +1,15 @@
-import { mergeTypeDefs } from "@graphql-tools/merge"
-import { gql, makeExecutableSchema } from "apollo-server-micro"
-import { DateTimeResolver, DateTimeTypeDefinition } from "graphql-scalars"
+import { makeSchema } from 'nexus'
+import path from 'path'
 
-import { fetchPlaylist, fetchStation, fetchStations } from "services/somafm"
-import { StationInfo } from "types"
+import * as ChannelTypes from './Channel'
+import * as PlaylistTypes from './Playlist'
+import * as scalarTypes from './scalars'
 
-const typeDefs = gql`
-  type PlaylistEntry {
-    title: String
-    artist: String
-    album: String
-    timestamp: DateTime
-  }
-  type Station {
-    id: ID!
-    title: String
-    description: String
-    thumbnail: String
-    updated: DateTime
-    listeners: Int
-    nowPlaying: String
-  }
-  type Query {
-    stations: [Station!]!
-    station(id: String!): Station
-    playlist(id: String!): [PlaylistEntry!]
-  }
-`
-
-const resolvers = {
-  Query: {
-    stations: async () => {
-      return await fetchStations()
-    },
-    station: (_parent: unknown, { id }: { id: string }) => {
-      return fetchStation(id)
-    },
+const schema = makeSchema({
+  types: [ChannelTypes, PlaylistTypes, scalarTypes],
+  outputs: {
+    schema: path.join(process.cwd(), '/src/generated/schema.graphql'),
+    typegen: path.join(process.cwd(), '/src/generated/types.ts'),
   },
-  Station: {
-    updated: (parent: StationInfo) => new Date(parent.updated * 1000),
-    playlist: (parent: StationInfo) => {
-      return fetchPlaylist(parent.id)
-    },
-  },
-  DateTime: DateTimeResolver,
-}
-
-export default makeExecutableSchema({
-  typeDefs: mergeTypeDefs([typeDefs, DateTimeTypeDefinition]),
-  resolvers,
 })
+export default schema

@@ -1,30 +1,29 @@
-import axios from "axios"
-import { DOMParser } from "xmldom"
+import axios from 'axios'
+import { DOMParser } from 'xmldom'
 
-import { PlaylistEntry, StationInfo } from "types"
+import { ChannelType, PlaylistEntryType } from '../types'
 
 const getText = (node: Element, tag: string) =>
   node.getElementsByTagName(tag)[0].textContent
 
-const parseStationInfo = (node: Element): StationInfo => ({
-  id: node.getAttribute("id"),
-  title: getText(node, "title"),
-  description: getText(node, "description"),
-  thumbnail: getText(node, "xlimage"),
-  updated: parseInt(getText(node, "updated"), 10),
-  listeners: parseInt(getText(node, "listeners"), 10),
-  nowPlaying: getText(node, "lastPlaying"),
-  playlist: getText(node, "fastpls"),
+const parseChannelInfo = (node: Element): ChannelType => ({
+  id: node.getAttribute('id'),
+  title: getText(node, 'title'),
+  description: getText(node, 'description'),
+  thumbnail: getText(node, 'xlimage'),
+  updated: new Date(parseInt(getText(node, 'updated'), 10) * 1000),
+  listeners: parseInt(getText(node, 'listeners'), 10),
+  nowPlaying: getText(node, 'lastPlaying'),
 })
 
-const parsePlaylistEntry = (node: Element): PlaylistEntry => ({
-  title: getText(node, "title"),
-  artist: getText(node, "artist"),
-  album: getText(node, "album"),
-  timestamp: new Date(parseInt(getText(node, "date"), 10) * 1000),
+const parsePlaylistEntry = (node: Element): PlaylistEntryType => ({
+  title: getText(node, 'title'),
+  artist: getText(node, 'artist'),
+  album: getText(node, 'album'),
+  timestamp: new Date(parseInt(getText(node, 'date'), 10) * 1000),
 })
 
-const compareStations = (lhs: StationInfo, rhs: StationInfo) =>
+const compareChannels = (lhs: ChannelType, rhs: ChannelType) =>
   lhs.id.localeCompare(rhs.id)
 
 const fetchXml = async (
@@ -37,27 +36,27 @@ const fetchXml = async (
   const xml = parser.parseFromString(data)
   const root = xml.getElementsByTagName(container)[0]
   return Array.from(root.childNodes)
-    .filter((t) => t.constructor.name === "Element")
+    .filter((t) => t.constructor.name === 'Element')
     .map((node) => node as Element)
 }
 
-export const fetchStations = async (): Promise<StationInfo[]> => {
-  const channels = await fetchXml("channels.xml", "channels")
-  return channels.map(parseStationInfo).sort(compareStations)
+export const fetchChannels = async (): Promise<ChannelType[]> => {
+  const channels = await fetchXml('channels.xml', 'channels')
+  return channels.map(parseChannelInfo).sort(compareChannels)
 }
 
-export const fetchStation = async (id: string): Promise<StationInfo> => {
-  const channels = await fetchXml("channels.xml", "channels")
-  const station = channels.find((node) => node.getAttribute("id") === id)
-  if (!station) {
+export const fetchChannel = async (id: string): Promise<ChannelType | null> => {
+  const channels = await fetchXml('channels.xml', 'channels')
+  const channel = channels.find((node) => node.getAttribute('id') === id)
+  if (!channel) {
     return null
   }
-  return parseStationInfo(station)
+  return parseChannelInfo(channel)
 }
 
 export const fetchPlaylist = async (
-  station: string
-): Promise<PlaylistEntry[]> => {
-  const songs = await fetchXml(`songs/${station}.xml`, "songs")
+  channelId: string
+): Promise<PlaylistEntryType[]> => {
+  const songs = await fetchXml(`songs/${channelId}.xml`, 'songs')
   return songs.map(parsePlaylistEntry)
 }

@@ -24,6 +24,7 @@
     "graphql": "^15.5.0",
     "graphql-scalars": "^1.9.3",
     "next": "^9.4.0",
+    "nexus": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "swr": "^0.2.0",
