@@ -11,12 +11,19 @@
   },
   "dependencies": {
     "@heroicons/react": "1.x",
+    "apollo-server-micro": "2.x",
     "autoprefixer": "10.x",
+    "axios": "0.21.x",
+    "cors": "2.x",
+    "graphql": "15.x",
+    "graphql-scalars": "1.x",
     "next": "11.x",
+    "nexus": "1.x",
     "postcss": "8.x",
     "react": "17.x",
     "react-dom": "17.x",
-    "tailwindcss": "2.x"
+    "tailwindcss": "2.x",
+    "xmldom": "0.3.x"
   },
   "devDependencies": {
     "@babel/core": "7.x",
