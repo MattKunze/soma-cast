@@ -10,25 +10,29 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "autoprefixer": "latest",
-    "heroicons-react": "^1.4.1",
-    "next": "latest",
-    "postcss": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "tailwindcss": "latest"
+    "@heroicons/react": "1.x",
+    "autoprefixer": "10.x",
+    "next": "11.x",
+    "postcss": "8.x",
+    "react": "17.x",
+    "react-dom": "17.x",
+    "tailwindcss": "2.x"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
-    "@storybook/addon-actions": "^6.3.7",
-    "@storybook/addon-essentials": "^6.3.7",
-    "@storybook/addon-links": "^6.3.7",
-    "@storybook/addon-postcss": "^2.0.0",
-    "@storybook/react": "^6.3.7",
-    "@types/react": "latest",
-    "@types/tailwindcss": "latest",
-    "babel-loader": "^8.2.2",
-    "typescript": "latest"
+    "@babel/core": "7.x",
+    "@storybook/addon-actions": "6.x",
+    "@storybook/addon-essentials": "6.x",
+    "@storybook/addon-links": "6.x",
+    "@storybook/addon-postcss": "2.x",
+    "@storybook/components": "6.x",
+    "@storybook/core-events": "6.x",
+    "@storybook/react": "6.x",
+    "@storybook/theming": "6.x",
+    "@types/react": "17.x",
+    "@types/tailwindcss": "2.x",
+    "babel-loader": "8.x",
+    "typescript": "4.x",
+    "webpack": "5.x"
   },
   "prettier": {
     "semi": false

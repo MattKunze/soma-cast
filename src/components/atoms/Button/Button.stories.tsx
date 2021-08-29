@@ -1,8 +1,7 @@
-import { createElement } from "react"
 import { Story } from "@storybook/react"
-import * as HeroIcons from "heroicons-react"
 
 import { PaletteColor } from "../../../types/tailwind"
+import HeroIcon, { IconName, IconNames } from "../HeroIcon"
 import Button, { ButtonProps } from "./"
 
 export default {
@@ -12,19 +11,17 @@ export default {
     icon: {
       control: {
         type: "select",
-        options: Object.keys(HeroIcons).filter((t) => t.endsWith("Outline")),
+        options: IconNames,
       },
     },
   },
 }
 
-// encapsulate type conversion garbage here - prop type is `ReactNode` but
-// we edit the control as a string
-const renderIcon = (icon: unknown) =>
-  createElement(HeroIcons[icon as keyof typeof HeroIcons])
-
 const Template: Story<ButtonProps> = ({ icon, ...args }) => (
-  <Button icon={icon ? renderIcon(icon) : undefined} {...args} />
+  <Button
+    icon={icon ? <HeroIcon icon={icon as IconName} /> : undefined}
+    {...args}
+  />
 )
 
 export const DefaultArgs: Story<ButtonProps> = Template.bind({})
@@ -45,6 +42,6 @@ WithText.argTypes = {
 export const WithIcon = Template.bind({})
 WithIcon.args = {
   text: "Icons even",
-  icon: "SparklesOutline",
+  icon: "SparklesIcon",
   color: PaletteColor.Pink,
 }

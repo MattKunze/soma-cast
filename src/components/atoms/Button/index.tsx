@@ -22,7 +22,7 @@ export default function Button({
   onClick,
 }: ButtonProps) {
   const content = icon ? (
-    <div className="flex flex-row gap-2">
+    <div className="flex flex-row gap-2 items-center">
       {rightIcon ? (
         <>
           {text}
