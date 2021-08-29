@@ -1,0 +1,27 @@
+export type ColorIntensity = 0 | 100 | 200 | 300 | 400 | 500 | 600 | 700
+
+export enum PaletteColor {
+  Amber = "amber",
+  Blue = "blue",
+  BlueGray = "blueGray",
+  CoolGray = "coolGray",
+  Cyan = "cyan",
+  Emerald = "emerald",
+  Fuchsia = "fuchsia",
+  Gray = "gray",
+  Green = "green",
+  Indigo = "indigo",
+  Lime = "lime",
+  Orange = "orange",
+  Pink = "pink",
+  Purple = "purple",
+  Red = "red",
+  Rose = "rose",
+  Sky = "sky",
+  Teal = "teal",
+  Transparent = "transparent",
+  TrueGray = "trueGray",
+  Violet = "violet",
+  WarmGray = "warmGray",
+  Yellow = "yellow",
+}

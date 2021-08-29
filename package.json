@@ -1,0 +1,36 @@
+{
+  "name": "soma-cast",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "dependencies": {
+    "autoprefixer": "latest",
+    "heroicons-react": "^1.4.1",
+    "next": "latest",
+    "postcss": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwindcss": "latest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@storybook/addon-actions": "^6.3.7",
+    "@storybook/addon-essentials": "^6.3.7",
+    "@storybook/addon-links": "^6.3.7",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/react": "^6.3.7",
+    "@types/react": "latest",
+    "@types/tailwindcss": "latest",
+    "babel-loader": "^8.2.2",
+    "typescript": "latest"
+  },
+  "prettier": {
+    "semi": false
+  }
+}
