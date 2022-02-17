@@ -17,7 +17,7 @@
     "cors": "2.x",
     "graphql": "15.x",
     "graphql-scalars": "1.x",
-    "next": "11.x",
+    "next": "12.x",
     "nexus": "1.x",
     "postcss": "8.x",
     "react": "17.x",
